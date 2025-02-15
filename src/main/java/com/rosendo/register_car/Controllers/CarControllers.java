@@ -24,8 +24,24 @@ public class CarControllers {
         return ResponseEntity.status(HttpStatus.OK).body(carServices.getAllCars());
     }
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getCarById(@PathVariable(value = "id") Long carId){
+        return ResponseEntity.status(HttpStatus.OK).body(carServices.getCarById(carId));
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createUser(@RequestBody @Valid CarModelDto carModelDto){
+    public ResponseEntity<?> registerCar(@RequestBody @Valid CarModelDto carModelDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(carServices.registerCar(carModelDto));
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateCar(@PathVariable(value = "id") Long carId, @RequestBody @Valid CarModelDto carModelDto){
+        return ResponseEntity.status(HttpStatus.OK).body(carServices.updateCar(carId, carModelDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCarById(@PathVariable(value = "id") Long userId) {
+        carServices.deleteCar(userId);
+        return ResponseEntity.noContent().build();
     }
 }

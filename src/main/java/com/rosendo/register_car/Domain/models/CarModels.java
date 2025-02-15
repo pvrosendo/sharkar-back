@@ -22,6 +22,9 @@ public class CarModels implements Serializable {
     @Enumerated(EnumType.STRING)
     private CarBrandsEnum brand;
 
+    @Column(name = "Modelo")
+    private String model;
+
     @Column(name = "ANO", length = 4)
     private String year;
 
@@ -89,4 +92,11 @@ public class CarModels implements Serializable {
         return result;
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
 }
