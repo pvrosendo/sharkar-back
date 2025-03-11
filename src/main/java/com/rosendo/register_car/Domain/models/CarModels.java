@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -26,14 +28,14 @@ public class CarModels implements Serializable {
     @Column(name = "Modelo", nullable = false)
     private String model;
 
-    @Column(name = "ANO", length = 4, nullable = false) //TODO: change for number
-    private String year;
+    @Column(name = "ANO", nullable = false) //TODO: change for number
+    private Integer year;
 
     @Column(name = "PRECO", nullable = false)
     private Double price;
 
     @Column(name = "DATA_REGISTRO", nullable = false)
-    private Date registerDate;
+    private String registerDate;
 
     @Column(name = "CILINDRADA", nullable = false)
     private String displacement;
@@ -66,11 +68,11 @@ public class CarModels implements Serializable {
         this.model = model;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -82,11 +84,11 @@ public class CarModels implements Serializable {
         this.price = price;
     }
 
-    public Date getRegisterDate() {
+    public String getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(String registerDate) {
         this.registerDate = registerDate;
     }
 

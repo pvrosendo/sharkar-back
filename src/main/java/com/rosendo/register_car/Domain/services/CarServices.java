@@ -7,8 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,11 +28,14 @@ public class CarServices {
 
     public CarModels registerCar(CarModelDto carModelDto){
         //TODO: verification of exists model/year
+
         CarModels carModels = new CarModels();
         BeanUtils.copyProperties(carModelDto, carModels);
-        carModels.setRegisterDate(Date.from(Instant.now()));
-        carRepository.save(carModels);
-        return carModels;
+
+        carModels.setRegisterDate(
+                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        return carRepository.save(carModels);
     }
 
     public CarModels updateCar(Long id, CarModelDto carModelDto){
@@ -45,7 +48,8 @@ public class CarServices {
         carModel.orElseThrow().setDisplacement(carModelDto.displacement());
         carModel.orElseThrow().setCarType(carModelDto.carType());
 
-        carModel.orElseThrow().setRegisterDate(Date.from(Instant.now()));
+        carModel.orElseThrow()
+                .setRegisterDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         return carRepository.save(carModel.get());
     }
