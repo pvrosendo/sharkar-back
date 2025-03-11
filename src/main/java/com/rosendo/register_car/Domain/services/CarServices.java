@@ -7,6 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,17 +30,22 @@ public class CarServices {
         //TODO: verification of exists model/year
         CarModels carModels = new CarModels();
         BeanUtils.copyProperties(carModelDto, carModels);
+        carModels.setRegisterDate(Date.from(Instant.now()));
         carRepository.save(carModels);
         return carModels;
     }
 
     public CarModels updateCar(Long id, CarModelDto carModelDto){
         Optional<CarModels> carModel = carRepository.findById(id);
+
         carModel.orElseThrow().setBrand(carModelDto.brand());
         carModel.orElseThrow().setModel(carModelDto.model());
         carModel.orElseThrow().setYear(carModelDto.year());
         carModel.orElseThrow().setPrice(carModelDto.price());
-        carModel.orElseThrow().setRegisterDate(carModelDto.registerDate());
+        carModel.orElseThrow().setDisplacement(carModelDto.displacement());
+        carModel.orElseThrow().setCarType(carModelDto.carType());
+
+        carModel.orElseThrow().setRegisterDate(Date.from(Instant.now()));
 
         return carRepository.save(carModel.get());
     }

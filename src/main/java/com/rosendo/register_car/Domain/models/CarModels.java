@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -18,21 +19,28 @@ public class CarModels implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "MARCA")
+    @Column(name = "MARCA", length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private CarBrandsEnum brand;
 
-    @Column(name = "Modelo")
+    @Column(name = "Modelo", nullable = false)
     private String model;
 
-    @Column(name = "ANO", length = 4)
+    @Column(name = "ANO", length = 4, nullable = false) //TODO: change for number
     private String year;
 
-    @Column(name = "PRECO")
+    @Column(name = "PRECO", nullable = false)
     private Double price;
 
-    @Column(name = "DATA_REGISTRO")
-    private String registerDate;
+    @Column(name = "DATA_REGISTRO", nullable = false)
+    private Date registerDate;
+
+    @Column(name = "CILINDRADA", nullable = false)
+    private String displacement;
+
+    @Column(name = "CAMBIO", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CarTypeEnum carType;
 
     public Long getId() {
         return id;
@@ -48,6 +56,14 @@ public class CarModels implements Serializable {
 
     public void setBrand(CarBrandsEnum brand) {
         this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getYear() {
@@ -66,37 +82,27 @@ public class CarModels implements Serializable {
         this.price = price;
     }
 
-    public String getRegisterDate() {
+    public Date getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(String registerDate) {
+    public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CarModels carModels = (CarModels) o;
-        return Objects.equals(id, carModels.id) && brand == carModels.brand && Objects.equals(year, carModels.year) && Objects.equals(price, carModels.price) && Objects.equals(registerDate, carModels.registerDate);
+    public String getDisplacement() {
+        return displacement;
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(id);
-        result = 31 * result + Objects.hashCode(brand);
-        result = 31 * result + Objects.hashCode(year);
-        result = 31 * result + Objects.hashCode(price);
-        result = 31 * result + Objects.hashCode(registerDate);
-        return result;
+    public void setDisplacement(String displacement) {
+        this.displacement = displacement;
     }
 
-    public String getModel() {
-        return model;
+    public CarTypeEnum getCarType() {
+        return carType;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setCarType(CarTypeEnum carType) {
+        this.carType = carType;
     }
 }

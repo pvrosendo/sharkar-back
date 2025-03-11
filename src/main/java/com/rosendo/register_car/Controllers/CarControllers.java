@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/register-car")
 public class CarControllers {
@@ -35,7 +36,10 @@ public class CarControllers {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> updateCar(@PathVariable(value = "id") Long carId, @RequestBody @Valid CarModelDto carModelDto){
+    public ResponseEntity<Object> updateCar(
+            @PathVariable(value = "id") Long carId,
+            @RequestBody @Valid CarModelDto carModelDto)
+    {
         return ResponseEntity.status(HttpStatus.OK).body(carServices.updateCar(carId, carModelDto));
     }
 
