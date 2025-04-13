@@ -1,7 +1,7 @@
 package com.rosendo.register_car.Controllers;
 
 import com.rosendo.register_car.Domain.dtos.CarModelDto;
-import com.rosendo.register_car.Domain.models.CarModels;
+import com.rosendo.register_car.Domain.models.UserCarModel;
 import com.rosendo.register_car.Domain.services.CarServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +14,14 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/register-car")
+@RequestMapping(value = "/dream-car")
 public class CarControllers {
 
     @Autowired
     private CarServices carServices;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CarModels>> getAllCars() {
+    public ResponseEntity<List<UserCarModel>> getAllCars() {
         return ResponseEntity.status(HttpStatus.OK).body(carServices.getAllCars());
     }
 
@@ -48,4 +48,5 @@ public class CarControllers {
         carServices.deleteCar(userId);
         return ResponseEntity.noContent().build();
     }
+
 }

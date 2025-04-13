@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotNull;
 public record CarModelDto(
         @NotNull CarBrandsEnum brand,
         @NotBlank String model,
-        @NotBlank Integer year,
+        @NotNull Integer year,
         @NotNull Double price,
-        @NotNull String displacement,
+        @NotBlank String displacement,
         @NotNull CarTypeEnum carType
 ) { }

@@ -4,107 +4,63 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
-
 @Entity
-@Table(name="TB_CARS")
+@Table(name = "cars_model_fipe")
 public class CarModels implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name = "BRAND_ID")
+    private Long brandId;
 
-    @Column(name = "MARCA", length = 10, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CarBrandsEnum brand;
+    @Column(name = "MODEL_ID")
+    private Long modelId;
 
-    @Column(name = "Modelo", nullable = false)
-    private String model;
+    @Column(name = "MODEL_NAME")
+    private String modelName;
 
-    @Column(name = "ANO", nullable = false) //TODO: change for number
-    private Integer year;
-
-    @Column(name = "PRECO", nullable = false)
-    private Double price;
-
-    @Column(name = "DATA_REGISTRO", nullable = false)
-    private String registerDate;
-
-    @Column(name = "CILINDRADA", nullable = false)
-    private String displacement;
-
-    @Column(name = "CAMBIO", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CarTypeEnum carType;
-
-    public Long getId() {
-        return id;
+    public Long getBrandId() {
+        return brandId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
-    public CarBrandsEnum getBrand() {
-        return brand;
+    public Long getModelId() {
+        return modelId;
     }
 
-    public void setBrand(CarBrandsEnum brand) {
-        this.brand = brand;
+    public void setModelId(Long modelId) {
+        this.modelId = modelId;
     }
 
-    public String getModel() {
-        return model;
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 
-    public Integer getYear() {
-        return year;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CarModels carModels = (CarModels) o;
+        return Objects.equals(brandId, carModels.brandId) && Objects.equals(modelId, carModels.modelId) && Objects.equals(modelName, carModels.modelName);
     }
 
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getRegisterDate() {
-        return registerDate;
-    }
-
-    public void setRegisterDate(String registerDate) {
-        this.registerDate = registerDate;
-    }
-
-    public String getDisplacement() {
-        return displacement;
-    }
-
-    public void setDisplacement(String displacement) {
-        this.displacement = displacement;
-    }
-
-    public CarTypeEnum getCarType() {
-        return carType;
-    }
-
-    public void setCarType(CarTypeEnum carType) {
-        this.carType = carType;
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(brandId);
+        result = 31 * result + Objects.hashCode(modelId);
+        result = 31 * result + Objects.hashCode(modelName);
+        return result;
     }
 }
