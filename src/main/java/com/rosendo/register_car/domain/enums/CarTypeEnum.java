@@ -1,4 +1,4 @@
-package com.rosendo.register_car.Domain.models;
+package com.rosendo.register_car.domain.enums;
 
 public enum CarTypeEnum {
     manual,

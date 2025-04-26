@@ -1,8 +1,8 @@
-package com.rosendo.register_car.Domain.services;
+package com.rosendo.register_car.domain.service;
 
-import com.rosendo.register_car.Domain.dtos.CarModelDto;
-import com.rosendo.register_car.Domain.models.UserCarModel;
-import com.rosendo.register_car.Domain.repositories.UserCarRepository;
+import com.rosendo.register_car.domain.dto.CarModelDto;
+import com.rosendo.register_car.domain.model.CarModel;
+import com.rosendo.register_car.domain.repository.CarRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,32 +16,29 @@ import java.util.Optional;
 @Service
 public class CarServices {
 
-
     @Autowired
-    private UserCarRepository userCarRepository;
+    private CarRepository carRepository;
 
+    public List<CarModel> getAllCars() { return carRepository.findAll(); }
 
-
-    public List<UserCarModel> getAllCars() { return userCarRepository.findAll(); }
-
-    public Optional<UserCarModel> getCarById(Long carId) {
-        return userCarRepository.findById(carId);
+    public Optional<CarModel> getCarById(Long carId) {
+        return carRepository.findById(carId);
     }
 
-    public UserCarModel registerCar(CarModelDto carModelDto){
+    public CarModel registerCar(CarModelDto carModelDto){
         //TODO: verification of exists model/year
 
-        UserCarModel userCarModel = new UserCarModel();
-        BeanUtils.copyProperties(carModelDto, userCarModel);
+        CarModel carModel = new CarModel();
+        BeanUtils.copyProperties(carModelDto, carModel);
 
-        userCarModel.setRegisterDate(
+        carModel.setRegisterDate(
                 LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        return userCarRepository.save(userCarModel);
+        return carRepository.save(carModel);
     }
 
-    public UserCarModel updateCar(Long id, CarModelDto carModelDto){
-        Optional<UserCarModel> carModel = userCarRepository.findById(id);
+    public CarModel updateCar(Long id, CarModelDto carModelDto){
+        Optional<CarModel> carModel = carRepository.findById(id);
 
         carModel.orElseThrow().setBrand(carModelDto.brand());
         carModel.orElseThrow().setModel(carModelDto.model());
@@ -53,11 +50,11 @@ public class CarServices {
         carModel.orElseThrow()
                 .setRegisterDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        return userCarRepository.save(carModel.get());
+        return carRepository.save(carModel.get());
     }
 
     public void deleteCar(Long id){
-        userCarRepository.deleteById(id);
+        carRepository.deleteById(id);
     }
 
 }

@@ -1,7 +1,7 @@
-package com.rosendo.register_car.Domain.dtos;
+package com.rosendo.register_car.domain.dto;
 
-import com.rosendo.register_car.Domain.models.CarBrandsEnum;
-import com.rosendo.register_car.Domain.models.CarTypeEnum;
+import com.rosendo.register_car.domain.enums.CarBrandsEnum;
+import com.rosendo.register_car.domain.enums.CarTypeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

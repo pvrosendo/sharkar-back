@@ -1,4 +1,4 @@
-package com.rosendo.register_car.Domain.models;
+package com.rosendo.register_car.domain.enums;
 
 import java.util.List;
 
@@ -36,19 +36,16 @@ public enum CarBrandsEnum {
 
     private final Integer carBrandId;
 
-    private final List<Integer> carsBrandList = List.of(
-            6, 7, 13, 17, 20, 21, 23, 25, 26, 28, 29, 31, 33, 34, 39, 41, 43, 44, 47, 48, 54,
-            56, 58, 59, 171, 177, 185, 211, 238, 240);
-
     CarBrandsEnum(Integer carBrandId) {
         this.carBrandId = carBrandId;
     }
 
-    public Integer getCarBrandId() {
-        return carBrandId;
-    }
+    private final List<Integer> carsBrandList = List.of(
+            6, 7, 13, 17, 20, 21, 23, 25, 26, 28, 29, 31, 33, 34, 39, 41, 43, 44, 47, 48, 54,
+            56, 58, 59, 171, 177, 185, 211, 238, 240);
 
     public List<Integer> getCarsBrandList() {
         return carsBrandList;
     }
+
 }

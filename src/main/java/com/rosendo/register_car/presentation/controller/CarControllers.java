@@ -1,8 +1,8 @@
-package com.rosendo.register_car.Controllers;
+package com.rosendo.register_car.presentation.controller;
 
-import com.rosendo.register_car.Domain.dtos.CarModelDto;
-import com.rosendo.register_car.Domain.models.UserCarModel;
-import com.rosendo.register_car.Domain.services.CarServices;
+import com.rosendo.register_car.domain.dto.CarModelDto;
+import com.rosendo.register_car.domain.model.CarModel;
+import com.rosendo.register_car.domain.service.CarServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class CarControllers {
     private CarServices carServices;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserCarModel>> getAllCars() {
+    public ResponseEntity<List<CarModel>> getAllCars() {
         return ResponseEntity.status(HttpStatus.OK).body(carServices.getAllCars());
     }
 
