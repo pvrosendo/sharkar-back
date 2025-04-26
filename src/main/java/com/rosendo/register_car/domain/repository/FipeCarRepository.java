@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CarModelsRepository extends JpaRepository<FipeCarModels, Integer> {
+public interface FipeCarRepository extends JpaRepository<FipeCarModels, Integer> {
     List<FipeCarModels> getByBrandId(Integer brandId);
 }

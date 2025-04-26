@@ -1,8 +1,6 @@
 package com.rosendo.register_car.domain.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rosendo.register_car.application.ApiFipeServices;
+import com.rosendo.register_car.application.service.ApiFipeServices;
 import com.rosendo.register_car.domain.enums.CarBrandsEnum;
 import com.rosendo.register_car.domain.model.FipeBrandModels;
 import com.rosendo.register_car.domain.model.FipeInfoModel;

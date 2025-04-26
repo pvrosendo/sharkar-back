@@ -6,4 +6,4 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserCarRepository extends JpaRepository<CarModel, Long> { }
+public interface CarRepository extends JpaRepository<CarModel, Long> { }

@@ -1,4 +1,4 @@
-package com.rosendo.register_car.application;
+package com.rosendo.register_car.application.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
