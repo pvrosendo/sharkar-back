@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FipeCarRepository extends JpaRepository<FipeCarModels, Integer> {
-    List<FipeCarModels> getByBrandId(Integer brandId);
+    List<FipeCarModels> findAllByBrandId(Integer brandId);
 }

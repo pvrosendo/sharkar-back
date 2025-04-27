@@ -1,6 +1,7 @@
 package com.rosendo.register_car.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -18,9 +19,11 @@ public class FipeYearModels implements Serializable {
 
     @Id
     @Column(name = "MODEL_ID")
+    @JsonIgnore
     private Integer modelId;
 
     @Column(name = "MODEL_NAME")
+    @JsonIgnore
     private String modelName;
 
     @Column(name = "YEAR_ID")

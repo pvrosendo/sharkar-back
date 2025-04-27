@@ -32,13 +32,13 @@ public class CarFipeControllers {
     }
 
     @GetMapping(value = "/years", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FipeYearModels>> getAllModelsByBrand(@RequestParam Integer brandId,
+    public ResponseEntity<List<FipeYearModels>> getAllYearsByBrandAndModel(@RequestParam Integer brandId,
                                                                     @RequestParam Integer modelId){
-        return ResponseEntity.status(HttpStatus.OK).body(carFipeServices.getCarYearsById(brandId, modelId));
+        return ResponseEntity.status(HttpStatus.OK).body(carFipeServices.getCarYears(brandId, modelId));
     }
 
     @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FipeInfoModel> getAllModelsByBrand(@RequestParam Integer brandId,
+    public ResponseEntity<FipeInfoModel> getInfoFipe(@RequestParam Integer brandId,
                                                              @RequestParam Integer modelId,
                                                              @RequestParam String yearId){
         return ResponseEntity.status(HttpStatus.OK).body(carFipeServices.getInfoFipeCar(brandId, modelId, yearId));

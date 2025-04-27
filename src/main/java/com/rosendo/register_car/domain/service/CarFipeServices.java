@@ -1,7 +1,6 @@
 package com.rosendo.register_car.domain.service;
 
 import com.rosendo.register_car.application.service.ApiFipeServices;
-import com.rosendo.register_car.domain.enums.CarBrandsEnum;
 import com.rosendo.register_car.domain.model.FipeBrandModels;
 import com.rosendo.register_car.domain.model.FipeInfoModel;
 import com.rosendo.register_car.domain.model.FipeCarModels;
@@ -39,17 +38,18 @@ public class CarFipeServices {
     public List<FipeCarModels> getAllModelsByBrandId(Integer brandId){
 
         if (carsBrandList.contains(brandId)) {
-            return fipeCarRepository.getByBrandId(brandId);
+            return fipeCarRepository.findAllByBrandId(brandId);
         }
         var response = apiServices.buildGetRequest(BASE_URL_FIPE + brandId + "/models/");
 
         return apiServices.mapJsonToFipeCarModels(response, brandId);
     }
 
-    public List<FipeYearModels> getCarYearsById(Integer brandId, Integer modelId) {
+    public List<FipeYearModels> getCarYears(Integer brandId, Integer modelId) {
+
         if (fipeYearRepository.getByModelId(modelId).isEmpty()) {
             var response = apiServices.buildGetRequest(BASE_URL_FIPE + brandId + "/models/" + modelId + "/years");
-            apiServices.mapJsonToFipeYearModels(response);
+            return apiServices.mapJsonToFipeYearModels(response);
         }
         return fipeYearRepository.getByModelId(modelId);
     }
