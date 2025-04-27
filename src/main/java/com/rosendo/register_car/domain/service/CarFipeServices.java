@@ -65,7 +65,4 @@ public class CarFipeServices {
         return fipeBrandRepository.findAll();
     }
 
-    public FipeBrandModels getBrandById(Integer id) {
-        return fipeBrandRepository.getByBrandId(id);
-    }
 }

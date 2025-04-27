@@ -44,11 +44,9 @@ public class FipeInfoModel implements Serializable {
     @JsonAlias({"referenceMonth"})
     private String referenceMonth;
 
-    @Column(name = "MODEL_ID", nullable = false)
     @JsonIgnore
     private Integer modelId;
 
-    @Column(nullable = false)
     @JsonIgnore
     private Integer brandId;
 

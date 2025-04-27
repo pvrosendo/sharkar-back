@@ -23,7 +23,7 @@ public class CarModel implements Serializable {
     @Enumerated(EnumType.STRING)
     private CarBrandsEnum brand;
 
-    @Column(name = "Modelo", nullable = false)
+    @Column(name = "MODELO", nullable = false)
     private String model;
 
     @Column(name = "ANO", nullable = false)
