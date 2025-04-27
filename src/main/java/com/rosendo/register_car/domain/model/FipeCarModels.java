@@ -8,16 +8,15 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "cars_model_fipe")
-
 public class FipeCarModels implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Id
     @Column(name = "BRAND_ID")
     private Integer brandId;
 
+    @Id
     @Column(name = "MODEL_ID")
     @JsonAlias({ "modelId", "code" })
     private Integer modelId;

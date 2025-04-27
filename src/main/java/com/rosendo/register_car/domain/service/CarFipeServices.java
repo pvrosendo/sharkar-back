@@ -31,12 +31,14 @@ public class CarFipeServices {
     @Autowired
     private ApiFipeServices apiServices;
 
-    private CarBrandsEnum carBrandsEnum;
+    private final List<Integer> carsBrandList = List.of(
+            6, 7, 13, 17, 20, 21, 23, 25, 26, 28, 29, 31, 33, 34, 39, 41, 43, 44, 47, 48, 54,
+            56, 58, 59, 171, 177, 185, 211, 238, 240);
 
 
     public List<FipeCarModels> getAllModelsByBrandId(Integer brandId){
 
-        if (carBrandsEnum.getCarsBrandList().contains(brandId)) {
+        if (carsBrandList.contains(brandId)) {
             return fipeCarRepository.getByBrandId(brandId);
         }
         var response = apiServices.buildGetRequest(BASE_URL_FIPE + brandId + "/models/");
