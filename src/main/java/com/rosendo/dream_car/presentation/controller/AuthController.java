@@ -1,6 +1,7 @@
 package com.rosendo.dream_car.presentation.controller;
 
 import com.rosendo.dream_car.application.service.AuthService;
+import com.rosendo.dream_car.infrastructure.security.JwtTokenProvider;
 import com.rosendo.dream_car.presentation.dto.AccountCredentialsDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/dream-car/auth")
 public class AuthController {
 
     @Autowired
-    AuthService service;
+    AuthService authService;
 
-    @PostMapping("/signIn")
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+
+    @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody AccountCredentialsDto credentials) {
-        if (credentialsIsInvalid(credentials))return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
-        var token = service.signIn(credentials);
+        if (credentialsIsInvalid(credentials)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
+        var token = authService.signIn(credentials);
 
         if (token == null) ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
         return  ResponseEntity.ok().body(token);
@@ -28,15 +32,22 @@ public class AuthController {
     @PutMapping("/refresh/{username}")
     public ResponseEntity<?> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
         if (parametersAreInvalid(username, refreshToken)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
-        var token = service.refreshToken(username, refreshToken);
+        var token = authService.refreshToken(username, refreshToken);
         if (token == null) ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
         return  ResponseEntity.ok().body(token);
     }
 
-    @PostMapping(value = "/createUser", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE}
+    @GetMapping("/validade-token")
+    public Boolean validateToken(@RequestHeader("Authorization") String token) {
+        return jwtTokenProvider.validateToken(token);
+    }
+
+    @PostMapping(value = "/createUser",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public AccountCredentialsDto create(@RequestBody AccountCredentialsDto credentials) {
-        return service.create(credentials);
+        return authService.create(credentials);
     }
 
     private boolean parametersAreInvalid(String username, String refreshToken) {
@@ -46,6 +57,6 @@ public class AuthController {
     private static boolean credentialsIsInvalid(AccountCredentialsDto credentials) {
         return credentials == null ||
                 StringUtils.isBlank(credentials.getPassword()) ||
-                StringUtils.isBlank(credentials.getUsername());
+                (StringUtils.isBlank(credentials.getUsername()) && StringUtils.isBlank(credentials.getEmail()));
     }
 }

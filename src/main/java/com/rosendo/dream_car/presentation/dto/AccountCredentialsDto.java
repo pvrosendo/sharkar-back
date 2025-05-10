@@ -11,13 +11,15 @@ public class AccountCredentialsDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String username;
+    private String email;
     private String password;
     private String fullName;
 
     public AccountCredentialsDto() {}
 
-    public AccountCredentialsDto(String username, String password, String fullName) {
+    public AccountCredentialsDto(String username, String email, String password, String fullName) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.fullName = fullName;
     }
@@ -46,6 +48,11 @@ public class AccountCredentialsDto implements Serializable {
         this.fullName = fullName;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
-
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

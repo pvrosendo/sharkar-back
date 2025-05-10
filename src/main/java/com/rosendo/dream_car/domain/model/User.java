@@ -28,6 +28,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(name="email", unique = true, nullable = false)
+    private String email;
+
     @Column
     private String password;
 
@@ -96,12 +99,17 @@ public class User implements UserDetails, Serializable {
         return this.enabled;
     }
 
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public void setUserName(String userName) {
@@ -114,6 +122,14 @@ public class User implements UserDetails, Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {
@@ -159,7 +175,6 @@ public class User implements UserDetails, Serializable {
     public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
-
 
     @Override
     public boolean equals(Object o) {

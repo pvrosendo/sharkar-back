@@ -38,18 +38,15 @@ public class AuthService {
     public ResponseEntity<TokenDto> signIn(AccountCredentialsDto credentials) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        credentials.getUsername(),
+                        credentials.getEmail() != null ? credentials.getEmail() : credentials.getUsername(),
                         credentials.getPassword()
                 )
         );
-
-        var user = repository.findByUsername(credentials.getUsername());
-        if (user == null) {
-            throw new UsernameNotFoundException("Username " + credentials.getUsername() + " not found!");
-        }
+        var user = getEmailOrUsername(credentials.getEmail(), credentials.getUsername());
 
         var token = tokenProvider.createAccessToken(
-                credentials.getUsername(),
+                user.getUsername(),
+                user.getEmail(),
                 user.getRoles()
         );
         return ResponseEntity.ok(token);
@@ -74,6 +71,7 @@ public class AuthService {
         var entity = new User();
         entity.setFullName(user.getFullName());
         entity.setUserName(user.getUsername());
+        entity.setEmail(user.getEmail());
         entity.setPassword(generateHashedPassword(user.getPassword()));
         entity.setAccountNonExpired(true);
         entity.setAccountNonLocked(true);
@@ -81,7 +79,7 @@ public class AuthService {
         entity.setEnabled(true);
 
         var dto = repository.save(entity);
-        return new AccountCredentialsDto(dto.getUsername(), dto.getPassword(), dto.getFullName());
+        return new AccountCredentialsDto(dto.getUsername(),  dto.getEmail(), dto.getPassword(), dto.getFullName());
     }
 
     private String generateHashedPassword(String password) {
@@ -96,5 +94,18 @@ public class AuthService {
 
         passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2Encoder);
         return passwordEncoder.encode(password);
+    }
+
+    private User getEmailOrUsername(String email, String username){
+        var userEmail = repository.findByEmail(email);
+
+        if (userEmail == null) {
+            var userUsername = repository.findByUsername(username);
+            if (userUsername == null) {
+                throw new UsernameNotFoundException("Username or email not found!");
+            }
+            return userUsername;
+        }
+        return userEmail;
     }
 }

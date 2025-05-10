@@ -65,9 +65,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(
-                                        "/auth/signIn",
-                                        "/auth/refresh/**",
-                                        "/auth/createUser"
+                                        "dream-car/auth/signin",
+                                        "dream-car/auth/refresh/**",
+                                        "dream-car/auth/createUser"
                                 ).permitAll()
                                 .requestMatchers("/dream-car/**").authenticated()
                                 .requestMatchers("/dream-car/fipe/").denyAll()
