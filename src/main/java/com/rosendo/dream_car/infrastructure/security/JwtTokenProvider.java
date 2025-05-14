@@ -7,10 +7,13 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.rosendo.dream_car.presentation.dto.TokenDto;
 import com.rosendo.dream_car.exception.InvalidJwtAuthenticationException;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +33,24 @@ public class JwtTokenProvider {
 
     @Value("${security.jwt.token.expire-lenght:3600000}")
     private long validityInMilliseconds = 3600000; // 1h
+
+    @Value("${security.jwt.cookie.name:jwt}")
+    private String jwtCookieName = "jwt";
+
+    @Value("${security.jwt.cookie.refresh-name:refresh}")
+    private String refreshCookieName = "refresh";
+
+    @Value("${security.jwt.cookie.domain:localhost}")
+    private String cookieDomain = "localhost";
+
+    @Value("${security.jwt.cookie.secure:true}")
+    private boolean cookieSecure = true;
+
+    @Value("${security.jwt.cookie.http-only:true}")
+    private boolean cookieHttpOnly = true;
+
+    @Value("${security.jwt.cookie.same-site:Strict}")
+    private String cookieSameSite = "Strict";
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -104,9 +125,22 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
+        // First try to get token from cookie
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (jwtCookieName.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        
+        // Fallback to Authorization header for backward compatibility
         String bearerToken = request.getHeader("Authorization");
-
-        if(refreshTokenContainsBearer(bearerToken)) return bearerToken.substring("Bearer ".length());
+        if (refreshTokenContainsBearer(bearerToken)) {
+            return bearerToken.substring("Bearer ".length());
+        }
+        
         return null;
     }
 
@@ -124,5 +158,49 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             throw new InvalidJwtAuthenticationException("Expired or Invalid JWT Token!");
         }
+    }
+
+    public void setTokenCookies(HttpServletResponse response, TokenDto token) {
+        Cookie accessTokenCookie = createCookie(
+            jwtCookieName,
+            token.getAccessToken(),
+            (int) (validityInMilliseconds / 1000),
+            true
+        );
+        
+        Cookie refreshTokenCookie = createCookie(
+            refreshCookieName,
+            token.getRefreshToken(),
+            (int) ((validityInMilliseconds * 3) / 1000),
+            true
+        );
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+    }
+
+    public void clearTokenCookies(HttpServletResponse response) {
+        Cookie accessTokenCookie = createCookie(jwtCookieName, "", 0, false);
+        Cookie refreshTokenCookie = createCookie(refreshCookieName, "", 0, false);
+        
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+    }
+
+    private Cookie createCookie(String name, String value, int maxAge, boolean httpOnly) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setDomain(cookieDomain);
+        cookie.setPath("/");
+        cookie.setMaxAge(maxAge);
+        cookie.setSecure(cookieSecure);
+        cookie.setHttpOnly(httpOnly);
+        
+        // Set SameSite attribute
+        String sameSite = cookieSameSite;
+        if (sameSite.equalsIgnoreCase("None")) {
+            cookie.setSecure(true); // SameSite=None requires Secure
+        }
+        
+        return cookie;
     }
 }

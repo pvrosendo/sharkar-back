@@ -35,7 +35,7 @@ public class AuthService {
     @Autowired
     private UserRepository repository;
 
-    public ResponseEntity<TokenDto> signIn(AccountCredentialsDto credentials) {
+    public TokenDto signIn(AccountCredentialsDto credentials) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         credentials.getEmail() != null ? credentials.getEmail() : credentials.getUsername(),
@@ -49,10 +49,10 @@ public class AuthService {
                 user.getEmail(),
                 user.getRoles()
         );
-        return ResponseEntity.ok(token);
+        return token;
     }
 
-    public ResponseEntity<TokenDto> refreshToken(String username, String refreshToken) {
+    public TokenDto refreshToken(String username, String refreshToken) {
         var user = repository.findByUsername(username);
         TokenDto token;
         if (user != null) {
@@ -60,7 +60,7 @@ public class AuthService {
         } else {
             throw new UsernameNotFoundException("Username " + username + " not found!");
         }
-        return ResponseEntity.ok(token);
+        return token;
     }
 
     public AccountCredentialsDto create(AccountCredentialsDto user) {

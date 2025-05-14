@@ -3,6 +3,7 @@ package com.rosendo.dream_car.config;
 import com.rosendo.dream_car.infrastructure.security.JwtTokenProvider;
 import com.rosendo.dream_car.infrastructure.security.filter.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,13 +17,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+
+    @Value("${security.cors.allowed-origins:http://localhost:3000}")
+    private String allowedOrigins;
 
     @Autowired
     private JwtTokenProvider tokenProvider;
@@ -67,13 +76,29 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "dream-car/auth/signin",
                                         "dream-car/auth/refresh/**",
-                                        "dream-car/auth/createUser"
+                                        "dream-car/auth/createUser",
+                                        "dream-car/auth/signout"
                                 ).permitAll()
                                 .requestMatchers("/dream-car/**").authenticated()
                                 .requestMatchers("/dream-car/fipe/").denyAll()
                 )
-                .cors(cors -> {})
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
         //@formatter:on
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(List.of("Set-Cookie"));
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
