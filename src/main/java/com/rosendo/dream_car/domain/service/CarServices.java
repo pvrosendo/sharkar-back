@@ -1,16 +1,14 @@
 package com.rosendo.dream_car.domain.service;
 
-import com.rosendo.dream_car.domain.dto.CarModelDto;
+import com.rosendo.dream_car.domain.dto.CarModelRequestDto;
+import com.rosendo.dream_car.domain.dto.CarModelResponseDto;
 import com.rosendo.dream_car.domain.model.CarModel;
 import com.rosendo.dream_car.domain.repository.CarRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -19,42 +17,43 @@ public class CarServices {
     @Autowired
     private CarRepository carRepository;
 
-    public List<CarModel> getAllCars() { return carRepository.findAll(); }
+    @Autowired
+    private UserService userService;
 
-    public Optional<CarModel> getCarById(Long carId) {
-        return carRepository.findById(carId);
-    }
 
-    public CarModel registerCar(CarModelDto carModelDto){
-        //TODO: verification of exists model/year
+    public CarModel registerCar(CarModelRequestDto carModelRequestDto, String username){
 
-        CarModel carModel = new CarModel();
-        BeanUtils.copyProperties(carModelDto, carModel);
+        var carModel = new CarModel();
 
-        carModel.setRegisterDate(
-                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        carModel.setUserId(userService.findUserByUsername(username).getId());
+        carModel.setModel(carModelRequestDto.model());
+        carModel.setBrandName(carModelRequestDto.brand());
+        carModel.setModelYear(carModelRequestDto.year());
+        carModel.setFuel(carModelRequestDto.fuel());
+        carModel.setPrice(carModelRequestDto.price());
+        carModel.setReferenceMonth(carModelRequestDto.referenceMonth());
 
         return carRepository.save(carModel);
     }
 
-    public CarModel updateCar(Long id, CarModelDto carModelDto){
-        Optional<CarModel> carModel = carRepository.findById(id);
+    public List<CarModelResponseDto> getAllCars(String username){
+        Long userId = userService.findUserByUsername(username).getId();
+        var carList = carRepository.findAllByUserId(userId);
+        List<CarModelResponseDto> carModelResponseDto = new ArrayList<>();
 
-        carModel.orElseThrow().setBrand(carModelDto.brand());
-        carModel.orElseThrow().setModel(carModelDto.model());
-        carModel.orElseThrow().setYear(carModelDto.year());
-        carModel.orElseThrow().setPrice(carModelDto.price());
-        carModel.orElseThrow().setDisplacement(carModelDto.displacement());
-        carModel.orElseThrow().setCarType(carModelDto.carType());
-
-        carModel.orElseThrow()
-                .setRegisterDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
-        return carRepository.save(carModel.get());
+        for (CarModel carModel : carList) {
+            var car = new CarModelResponseDto(carModel.getId(), carModel.getModel(), carModel.getBrandName(),
+                    carModel.getModelYear(),
+                    carModel.getFuel(),
+                    carModel.getPrice(), carModel.getReferenceMonth());
+            carModelResponseDto.add(car);
+        }
+        return carModelResponseDto.isEmpty() ? null : carModelResponseDto;
     }
 
-    public void deleteCar(Long id){
-        carRepository.deleteById(id);
+    public void deleteCar(String id){
+        carRepository.deleteById(Long.parseLong(id));
     }
+
 
 }

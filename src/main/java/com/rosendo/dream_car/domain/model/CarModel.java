@@ -1,73 +1,134 @@
 package com.rosendo.dream_car.domain.model;
 
-import com.rosendo.dream_car.domain.enums.CarBrandsEnum;
-import com.rosendo.dream_car.domain.enums.CarTypeEnum;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Entity
-@Table(name="tb_cars")
+@Table(name="DC_CARS_USERS")
 public class CarModel implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "MARCA", length = 10, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CarBrandsEnum brand;
+    @Column(name = "USER_ID", nullable = false)
+    @JsonAlias({"userId"})
+    private Long userId;
 
-    @Column(name = "MODELO", nullable = false)
+    @Column(name = "MODEL_NAME", nullable = false)
+    @JsonAlias({"model"})
     private String model;
 
-    @Column(name = "ANO", nullable = false)
-    private Integer year;
+    @Column(name = "BRAND_NAME", nullable = false)
+    @JsonAlias({"brand"})
+    private String brandName;
 
-    @Column(name = "PRECO", nullable = false)
-    private Double price;
+    @Column(name = "MODEL_YEAR", nullable = false)
+    @JsonAlias({"modelYear"})
+    private String modelYear;
 
-    @Column(name = "DATA_REGISTRO", nullable = false)
-    private String registerDate;
+    @Column(name = "FUEL_TYPE", nullable = false)
+    @JsonAlias({"fuel"})
+    private String fuel;
 
-    @Column(name = "CILINDRADA", nullable = false)
-    private String displacement;
+    @Column(name = "PRICE", nullable = false)
+    @JsonAlias({"price"})
+    private String price;
 
-    @Column(name = "CAMBIO", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CarTypeEnum carType;
+    @Column(name = "REFERENCE_MONTH", nullable = false)
+    @JsonAlias({"referenceMonth"})
+    private String referenceMonth;
 
+    public Long getId() {
+        return id;
+    }
 
-    public void setBrand(CarBrandsEnum brand) {
-        this.brand = brand;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getModel() {
+        return model;
     }
 
     public void setModel(String model) {
         this.model = model;
     }
 
-    public void setYear(Integer year) {
-        this.year = year;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setPrice(Double price) {
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    public String getModelYear() {
+        return modelYear;
+    }
+
+    public void setModelYear(String modelYear) {
+        this.modelYear = modelYear;
+    }
+
+    public String getFuel() {
+        return fuel;
+    }
+
+    public void setFuel(String fuel) {
+        this.fuel = fuel;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public void setRegisterDate(String registerDate) {
-        this.registerDate = registerDate;
+    public String getReferenceMonth() {
+        return referenceMonth;
     }
 
-    public void setDisplacement(String displacement) {
-        this.displacement = displacement;
+    public void setReferenceMonth(String referenceMonth) {
+        this.referenceMonth = referenceMonth;
     }
 
-    public void setCarType(CarTypeEnum carType) {
-        this.carType = carType;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CarModel carModel = (CarModel) o;
+        return Objects.equals(id, carModel.id) && Objects.equals(userId, carModel.userId) && Objects.equals(model, carModel.model) && Objects.equals(brandName, carModel.brandName) && Objects.equals(modelYear, carModel.modelYear) && Objects.equals(fuel, carModel.fuel) && Objects.equals(price, carModel.price) && Objects.equals(referenceMonth, carModel.referenceMonth);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(userId);
+        result = 31 * result + Objects.hashCode(model);
+        result = 31 * result + Objects.hashCode(brandName);
+        result = 31 * result + Objects.hashCode(modelYear);
+        result = 31 * result + Objects.hashCode(fuel);
+        result = 31 * result + Objects.hashCode(price);
+        result = 31 * result + Objects.hashCode(referenceMonth);
+        return result;
     }
 }

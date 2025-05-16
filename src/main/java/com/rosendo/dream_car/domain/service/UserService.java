@@ -1,5 +1,6 @@
 package com.rosendo.dream_car.domain.service;
 
+import com.rosendo.dream_car.domain.model.User;
 import com.rosendo.dream_car.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,9 +26,12 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             user = repository.findByEmail(usernameOrEmail);
         }
-        System.out.println(user);
 
         if (user != null) return user;
         else throw new UsernameNotFoundException("Username or email "+ usernameOrEmail +" not found!");
+    }
+
+    public User findUserByUsername(String username){
+        return repository.findByUsername(username);
     }
 }

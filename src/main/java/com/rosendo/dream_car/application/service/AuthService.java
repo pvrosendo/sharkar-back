@@ -44,12 +44,11 @@ public class AuthService {
         );
         var user = getEmailOrUsername(credentials.getEmail(), credentials.getUsername());
 
-        var token = tokenProvider.createAccessToken(
+        return tokenProvider.createAccessToken(
                 user.getUsername(),
                 user.getEmail(),
                 user.getRoles()
         );
-        return token;
     }
 
     public TokenDto refreshToken(String username, String refreshToken) {
@@ -96,7 +95,7 @@ public class AuthService {
         return passwordEncoder.encode(password);
     }
 
-    private User getEmailOrUsername(String email, String username){
+    public User getEmailOrUsername(String email, String username){
         var userEmail = repository.findByEmail(email);
 
         if (userEmail == null) {

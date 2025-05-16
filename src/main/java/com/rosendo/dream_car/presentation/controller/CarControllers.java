@@ -1,6 +1,7 @@
 package com.rosendo.dream_car.presentation.controller;
 
-import com.rosendo.dream_car.domain.dto.CarModelDto;
+import com.rosendo.dream_car.domain.dto.CarModelRequestDto;
+import com.rosendo.dream_car.domain.dto.CarModelResponseDto;
 import com.rosendo.dream_car.domain.model.CarModel;
 import com.rosendo.dream_car.domain.service.CarServices;
 import jakarta.validation.Valid;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping(value = "/dream-car")
 public class CarControllers {
@@ -20,33 +20,20 @@ public class CarControllers {
     @Autowired
     private CarServices carServices;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CarModel>> getAllCars() {
-        return ResponseEntity.status(HttpStatus.OK).body(carServices.getAllCars());
-    }
-
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getCarById(@PathVariable(value = "id") Long carId){
-        return ResponseEntity.status(HttpStatus.OK).body(carServices.getCarById(carId));
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> registerCar(@RequestBody @Valid CarModelDto carModelDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(carServices.registerCar(carModelDto));
+    public ResponseEntity<?> registerCar(@RequestBody @Valid CarModelRequestDto carModelRequestDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(carServices.registerCar(carModelRequestDto, carModelRequestDto.username()));
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> updateCar(
-            @PathVariable(value = "id") Long carId,
-            @RequestBody @Valid CarModelDto carModelDto)
-    {
-        return ResponseEntity.status(HttpStatus.OK).body(carServices.updateCar(carId, carModelDto));
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CarModelResponseDto>> getAllCars(@RequestParam String username){
+        return ResponseEntity.status(HttpStatus.OK).body(carServices.getAllCars(username));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCarById(@PathVariable(value = "id") Long userId) {
-        carServices.deleteCar(userId);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping()
+    public ResponseEntity<?> deleteCar(@RequestParam String id){
+        carServices.deleteCar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
