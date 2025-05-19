@@ -2,24 +2,22 @@ package com.rosendo.dream_car.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "car_info_fipe")
-@JsonPropertyOrder({"brand, model, modelYear, fuel, price, referenceMonth"})
+@Table(name = "DC_CARS_INFO_FIPE")
 public class FipeInfoModel implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "MODEL_NAME", nullable = false)
     @JsonAlias({"model"})
     private String model;
@@ -44,9 +42,11 @@ public class FipeInfoModel implements Serializable {
     @JsonAlias({"referenceMonth"})
     private String referenceMonth;
 
+    @Column(name = "MODEL_ID", nullable = false)
     @JsonIgnore
     private Integer modelId;
 
+    @Column(name = "BRAND_ID", nullable = false)
     @JsonIgnore
     private Integer brandId;
 
@@ -59,6 +59,34 @@ public class FipeInfoModel implements Serializable {
     @JsonIgnore
     private Character fuelAcronym;
 
+
+    public FipeInfoModel(
+            Integer brandId,
+            String brandName,
+            String codeFipe,
+            String fuel,
+            Character fuelAcronym,
+            String model,
+            Integer modelId,
+            String modelYear,
+            String price,
+            String referenceMonth,
+            Integer vehicleType
+    ) {
+        this.model = model;
+        this.brandName = brandName;
+        this.modelYear = modelYear;
+        this.fuel = fuel;
+        this.price = price;
+        this.referenceMonth = referenceMonth;
+        this.modelId = modelId;
+        this.brandId = brandId;
+        this.vehicleType = vehicleType;
+        this.codeFipe = codeFipe;
+        this.fuelAcronym = fuelAcronym;
+    }
+
+    public FipeInfoModel() {}
 
     public Character getFuelAcronym() {
         return fuelAcronym;

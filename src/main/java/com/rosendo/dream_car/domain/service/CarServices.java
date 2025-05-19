@@ -41,13 +41,15 @@ public class CarServices {
         var carList = carRepository.findAllByUserId(userId);
         List<CarModelResponseDto> carModelResponseDto = new ArrayList<>();
 
-        for (CarModel carModel : carList) {
-            var car = new CarModelResponseDto(carModel.getId(), carModel.getModel(), carModel.getBrandName(),
-                    carModel.getModelYear(),
-                    carModel.getFuel(),
-                    carModel.getPrice(), carModel.getReferenceMonth());
-            carModelResponseDto.add(car);
-        }
+        carList.forEach(x -> carModelResponseDto.add(new CarModelResponseDto(
+                x.getId(),
+                x.getModel(),
+                x.getBrandName(),
+                x.getModelYear(),
+                x.getFuel(),
+                x.getPrice(),
+                x.getReferenceMonth()))
+        );
         return carModelResponseDto.isEmpty() ? null : carModelResponseDto;
     }
 
