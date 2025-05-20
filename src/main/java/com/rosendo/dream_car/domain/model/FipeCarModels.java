@@ -25,6 +25,15 @@ public class FipeCarModels implements Serializable {
     @JsonAlias({ "modelName", "name" })
     private String modelName;
 
+
+    public FipeCarModels(Integer brandId, Integer modelId, String modelName) {
+        this.brandId = brandId;
+        this.modelId = modelId;
+        this.modelName = modelName;
+    }
+
+    public FipeCarModels() {}
+
     public Integer getBrandId() {
         return brandId;
     }

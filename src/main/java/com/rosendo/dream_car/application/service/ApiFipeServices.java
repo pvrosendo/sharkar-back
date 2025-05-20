@@ -52,7 +52,7 @@ public class ApiFipeServices {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            return mapper.readValue(response.body(), new TypeReference<List<FipeYearModels>>(){});
+            return mapper.readValue(response.body(), new TypeReference<>() {});
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -63,7 +63,7 @@ public class ApiFipeServices {
         ObjectMapper mapper = new ObjectMapper();
         try {
 
-            List<FipeCarModels> modelsList = mapper.readValue(response.body(), new TypeReference<List<FipeCarModels>>(){});
+            List<FipeCarModels> modelsList = mapper.readValue(response.body(), new TypeReference<>() {});
 
             for (FipeCarModels fipeCarModels : modelsList) {
                 fipeCarModels.setBrandId(brandId);

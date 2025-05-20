@@ -34,6 +34,13 @@ public class FipeYearModels implements Serializable {
     @JsonAlias({"name"})
     private String yearValue;
 
+    public FipeYearModels(Integer modelId, String modelName, String yearId, String yearValue) {
+        this.modelId = modelId;
+        this.modelName = modelName;
+        this.yearId = yearId;
+        this.yearValue = yearValue;
+    }
+
     public Integer getModelId() {
         return modelId;
     }
