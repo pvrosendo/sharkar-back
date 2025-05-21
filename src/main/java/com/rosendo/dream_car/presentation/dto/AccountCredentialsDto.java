@@ -3,8 +3,6 @@ package com.rosendo.dream_car.presentation.dto;
 import java.io.Serial;
 import java.io.Serializable;
 
-
-
 public class AccountCredentialsDto implements Serializable {
 
     @Serial

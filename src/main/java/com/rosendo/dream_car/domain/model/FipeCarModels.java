@@ -13,13 +13,13 @@ public class FipeCarModels implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "BRAND_ID")
-    private Integer brandId;
-
     @Id
     @Column(name = "MODEL_ID")
     @JsonAlias({ "modelId", "code" })
     private Integer modelId;
+
+    @Column(name = "BRAND_ID")
+    private Integer brandId;
 
     @Column(name = "MODEL_NAME")
     @JsonAlias({ "modelName", "name" })

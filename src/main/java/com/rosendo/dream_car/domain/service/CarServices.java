@@ -38,7 +38,9 @@ public class CarServices {
 
     public List<CarModelResponseDto> getAllCars(String username){
         Long userId = userService.findUserByUsername(username).getId();
+
         var carList = carRepository.findAllByUserId(userId);
+
         List<CarModelResponseDto> carModelResponseDto = new ArrayList<>();
 
         carList.forEach(x -> carModelResponseDto.add(new CarModelResponseDto(

@@ -181,7 +181,15 @@ public class User implements UserDetails, Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userName, user.userName) && Objects.equals(fullName, user.fullName) && Objects.equals(password, user.password) && Objects.equals(accountNonExpired, user.accountNonExpired) && Objects.equals(accountNonLocked, user.accountNonLocked) && Objects.equals(credentialsNonExpired, user.credentialsNonExpired) && Objects.equals(enabled, user.enabled) && Objects.equals(permissions, user.permissions);
+        return Objects.equals(id, user.id)
+                && Objects.equals(userName, user.userName)
+                && Objects.equals(fullName, user.fullName)
+                && Objects.equals(password, user.password)
+                && Objects.equals(accountNonExpired, user.accountNonExpired)
+                && Objects.equals(accountNonLocked, user.accountNonLocked)
+                && Objects.equals(credentialsNonExpired, user.credentialsNonExpired)
+                && Objects.equals(enabled, user.enabled)
+                && Objects.equals(permissions, user.permissions);
     }
 
     @Override

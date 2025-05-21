@@ -41,6 +41,8 @@ public class FipeYearModels implements Serializable {
         this.yearValue = yearValue;
     }
 
+    public FipeYearModels() {}
+
     public Integer getModelId() {
         return modelId;
     }

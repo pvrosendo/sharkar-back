@@ -2,7 +2,6 @@ package com.rosendo.dream_car.presentation.controller;
 
 import com.rosendo.dream_car.domain.dto.CarModelRequestDto;
 import com.rosendo.dream_car.domain.dto.CarModelResponseDto;
-import com.rosendo.dream_car.domain.model.CarModel;
 import com.rosendo.dream_car.domain.service.CarServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

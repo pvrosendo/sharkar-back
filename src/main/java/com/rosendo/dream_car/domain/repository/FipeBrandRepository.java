@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FipeBrandRepository extends JpaRepository<FipeBrandModels, Integer> {
-    FipeBrandModels getByBrandId(Integer id);
-}
+public interface FipeBrandRepository extends JpaRepository<FipeBrandModels, Integer> { }
