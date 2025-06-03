@@ -6,6 +6,7 @@ import com.rosendo.dream_car.domain.model.User;
 import com.rosendo.dream_car.domain.repository.UserRepository;
 import com.rosendo.dream_car.exception.RequiredObjectIsNullException;
 import com.rosendo.dream_car.infrastructure.security.JwtTokenProvider;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class AuthService {
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     public TokenDto signIn(AccountCredentialsDto credentials) {
         authenticationManager.authenticate(
@@ -41,7 +42,7 @@ public class AuthService {
                         credentials.getPassword()
                 )
         );
-        var user = getEmailOrUsername(credentials.getEmail(), credentials.getUsername());
+        var user = getByEmailOrUsername(credentials.getEmail(), credentials.getUsername());
 
         return tokenProvider.createAccessToken(
                 user.getUsername(),
@@ -51,7 +52,7 @@ public class AuthService {
     }
 
     public TokenDto refreshToken(String username, String refreshToken) {
-        var user = repository.findByUsername(username);
+        var user = userRepository.findByUsername(username);
         TokenDto token;
         if (user != null) {
             token = tokenProvider.refreshToken(refreshToken);
@@ -76,7 +77,7 @@ public class AuthService {
         entity.setCredentialsNonExpired(true);
         entity.setEnabled(true);
 
-        var dto = repository.save(entity);
+        var dto = userRepository.save(entity);
         return new AccountCredentialsDto(dto.getUsername(),  dto.getEmail(), dto.getPassword(), dto.getFullName());
     }
 
@@ -94,16 +95,41 @@ public class AuthService {
         return passwordEncoder.encode(password);
     }
 
-    public User getEmailOrUsername(String email, String username){
-        var userEmail = repository.findByEmail(email);
+    public String verifyPassword(String password){
+        return generateHashedPassword(password);
+    }
+
+    public User getByEmailOrUsername(String email, String username){
+        var userEmail = userRepository.findByEmail(email);
 
         if (userEmail == null) {
-            var userUsername = repository.findByUsername(username);
+            var userUsername = userRepository.findByUsername(username);
             if (userUsername == null) {
                 throw new UsernameNotFoundException("Username or email not found!");
             }
             return userUsername;
         }
         return userEmail;
+    }
+
+    public User updateUser(AccountCredentialsDto credentials) {
+        User user = getByEmailOrUsername(credentials.getUsername(), credentials.getPassword());
+
+        user.setFullName(credentials.getFullName());
+        user.setUserName(credentials.getUsername());
+        user.setEmail(credentials.getEmail());
+        user.setPassword(credentials.getPassword());
+
+        return userRepository.save(user);
+    }
+
+    public boolean parametersAreInvalid(String username, String refreshToken) {
+        return StringUtils.isBlank(username) || StringUtils.isBlank(refreshToken);
+    }
+
+    public boolean credentialsIsInvalid(AccountCredentialsDto credentials) {
+        return credentials == null ||
+                StringUtils.isBlank(credentials.getPassword()) ||
+                (StringUtils.isBlank(credentials.getUsername()) && StringUtils.isBlank(credentials.getEmail()));
     }
 }
