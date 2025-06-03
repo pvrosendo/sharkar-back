@@ -1,4 +1,4 @@
-package com.rosendo.dream_car.infrastructure.security;currentPassword &&
+package com.rosendo.dream_car.infrastructure.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -88,7 +88,7 @@ public class JwtTokenProvider {
     }
 
     private String getRefreshToken(String username, String email,  List<String> roles, Date now) {
-        Date refreshTokenValidity = new Date(now.getTime() + (validityInMilliseconds * 3));;
+        Date refreshTokenValidity = new Date(now.getTime() + (validityInMilliseconds * 3));
         return JWT.create()
                 .withClaim("roles", roles)
                 .withIssuedAt(now)
@@ -124,7 +124,6 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        // First try to get token from cookie
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -133,8 +132,7 @@ public class JwtTokenProvider {
                 }
             }
         }
-        
-        // Fallback to Authorization header for backward compatibility
+
         String bearerToken = request.getHeader("Authorization");
         if (refreshTokenContainsBearer(bearerToken)) {
             return bearerToken.substring("Bearer ".length());
@@ -193,8 +191,7 @@ public class JwtTokenProvider {
         cookie.setMaxAge(maxAge);
         cookie.setSecure(cookieSecure);
         cookie.setHttpOnly(httpOnly);
-        
-        // Set SameSite attribute
+
         String sameSite = cookieSameSite;
         if (sameSite.equalsIgnoreCase("None")) {
             cookie.setSecure(true); // SameSite=None requires Secure
