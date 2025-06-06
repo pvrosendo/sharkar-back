@@ -52,7 +52,7 @@ public class AuthService {
     }
 
     public TokenDto refreshToken(String username, String refreshToken) {
-        var user = userRepository.findByUsername(username);
+        var user = userRepository.findUserByUserName(username);
         TokenDto token;
         if (user != null) {
             token = tokenProvider.refreshToken(refreshToken);
@@ -100,11 +100,14 @@ public class AuthService {
     }
 
     public User getByEmailOrUsername(String email, String username){
-        var userEmail = userRepository.findByEmail(email);
+        System.out.println(username + " username!");
+        System.out.println(email + " email ");
+        var userEmail = userRepository.findUserByEmail(email);
 
         if (userEmail == null) {
-            var userUsername = userRepository.findByUsername(username);
+            var userUsername = userRepository.findUserByUserName(username);
             if (userUsername == null) {
+
                 throw new UsernameNotFoundException("Username or email not found!");
             }
             return userUsername;
@@ -113,13 +116,19 @@ public class AuthService {
     }
 
     public User updateUser(AccountCredentialsDto credentials) {
-        User user = getByEmailOrUsername(credentials.getUsername(), credentials.getPassword());
+        User user = getByEmailOrUsername(credentials.getEmail(), credentials.getUsername());
 
         user.setFullName(credentials.getFullName());
         user.setUserName(credentials.getUsername());
         user.setEmail(credentials.getEmail());
-        user.setPassword(credentials.getPassword());
+        user.setPassword(generateHashedPassword(credentials.getPassword()));
 
+        return userRepository.save(user);
+    }
+
+    public User updateUserPassword(AccountCredentialsDto credentials) {
+        User user = getByEmailOrUsername(credentials.getEmail(), credentials.getUsername());
+        user.setPassword(generateHashedPassword(credentials.getPassword()));
         return userRepository.save(user);
     }
 

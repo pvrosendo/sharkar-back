@@ -1,6 +1,5 @@
 package com.rosendo.dream_car.domain.service;
 
-import com.rosendo.dream_car.domain.model.User;
 import com.rosendo.dream_car.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,17 +20,13 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 
-        var user = repository.findByUsername(usernameOrEmail);
+        var user = repository.findUserByUserName(usernameOrEmail);
 
         if (user == null) {
-            user = repository.findByEmail(usernameOrEmail);
+            user = repository.findUserByEmail(usernameOrEmail);
         }
 
         if (user != null) return user;
         else throw new UsernameNotFoundException("Username or email "+ usernameOrEmail +" not found!");
-    }
-
-    public User findUserByUsername(String username){
-        return repository.findByUsername(username);
     }
 }

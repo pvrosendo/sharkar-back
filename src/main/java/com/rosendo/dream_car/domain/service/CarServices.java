@@ -4,6 +4,7 @@ import com.rosendo.dream_car.domain.dto.CarModelRequestDto;
 import com.rosendo.dream_car.domain.dto.CarModelResponseDto;
 import com.rosendo.dream_car.domain.model.CarModel;
 import com.rosendo.dream_car.domain.repository.CarRepository;
+import com.rosendo.dream_car.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,14 @@ public class CarServices {
     private CarRepository carRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
 
     public CarModel registerCar(CarModelRequestDto carModelRequestDto, String username){
 
         var carModel = new CarModel();
 
-        carModel.setUserId(userService.findUserByUsername(username).getId());
+        carModel.setUserId(userRepository.findUserByUserName(username).getId());
         carModel.setModel(carModelRequestDto.model());
         carModel.setBrandName(carModelRequestDto.brand());
         carModel.setModelYear(carModelRequestDto.year());
@@ -37,7 +38,7 @@ public class CarServices {
     }
 
     public List<CarModelResponseDto> getAllCars(String username){
-        Long userId = userService.findUserByUsername(username).getId();
+        Long userId = userRepository.findUserByUserName(username).getId();
 
         var carList = carRepository.findAllByUserId(userId);
 

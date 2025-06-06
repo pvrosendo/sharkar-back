@@ -77,7 +77,8 @@ public class SecurityConfig {
                                         "dream-car/auth/signin",
                                         "dream-car/auth/refresh/**",
                                         "dream-car/auth/createUser",
-                                        "dream-car/auth/signout"
+                                        "dream-car/auth/signout",
+                                        "dream-car/auth/user/**"
                                 ).permitAll()
                                 .requestMatchers("/dream-car/**").authenticated()
                                 .requestMatchers("/dream-car/fipe/").denyAll()

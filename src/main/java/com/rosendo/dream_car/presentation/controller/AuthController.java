@@ -1,6 +1,7 @@
 package com.rosendo.dream_car.presentation.controller;
 
 import com.rosendo.dream_car.application.service.AuthService;
+import com.rosendo.dream_car.domain.model.User;
 import com.rosendo.dream_car.domain.repository.UserRepository;
 import com.rosendo.dream_car.domain.service.UserService;
 import com.rosendo.dream_car.infrastructure.security.JwtTokenProvider;
@@ -100,10 +101,18 @@ public class AuthController {
         );
     }
 
-    @PutMapping("/user/updateInfo/")
+    @PutMapping("/user/updateInfo")
     public ResponseEntity<?> updateUser(@RequestBody AccountCredentialsDto credentials) {
-        if (authService.getByEmailOrUsername(credentials.getUsername(), credentials.getPassword()) == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
         return ResponseEntity.status(HttpStatus.OK).body(authService.updateUser(credentials));
+    }
+
+    @PutMapping("/user/updatePassword")
+    public ResponseEntity<?> updateUserPassword(@RequestBody AccountCredentialsDto credentials) {
+        User user = authService.getByEmailOrUsername(credentials.getEmail(), credentials.getUsername());
+
+        if ( user == null || !user.getFullName().equals(credentials.getFullName()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
+
+        return ResponseEntity.status(HttpStatus.OK).body(authService.updateUserPassword(credentials));
     }
 }
