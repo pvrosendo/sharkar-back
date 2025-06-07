@@ -95,13 +95,7 @@ public class AuthService {
         return passwordEncoder.encode(password);
     }
 
-    public String verifyPassword(String password){
-        return generateHashedPassword(password);
-    }
-
     public User getByEmailOrUsername(String email, String username){
-        System.out.println(username + " username!");
-        System.out.println(email + " email ");
         var userEmail = userRepository.findUserByEmail(email);
 
         if (userEmail == null) {
