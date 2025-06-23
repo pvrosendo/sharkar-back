@@ -107,4 +107,15 @@ public class CarFipeServices {
         }
         return infoCar;
     }
+
+    public FipeInfoModel getUpdateCarInfo(String brand, String model, String year) {
+        var brandId = fipeBrandRepository.findBrandIdByBrandName(brand);
+        var modelId = fipeCarRepository.findModelIdByModelName(model);
+        var yearId = fipeYearRepository.findYearIdByYearValue(year);
+
+        var response = apiServices.buildGetRequest(BASE_URL_FIPE + brandId + "/models/" + modelId + "/years/" + yearId);
+
+        return apiServices.mapJsonToFipeInfoModel(response);
+
+    }
 }

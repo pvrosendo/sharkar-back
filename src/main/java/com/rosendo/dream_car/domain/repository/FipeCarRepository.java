@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface FipeCarRepository extends JpaRepository<FipeCarModels, Integer> {
     List<FipeCarModels> findAllByBrandId(Integer brandId);
+    Integer findModelIdByModelName(String model);
 }

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface FipeYearRepository extends JpaRepository<FipeYearModels, Integer> {
     List<FipeYearModels> getByModelId(Integer modelId);
+    Integer findYearIdByYearValue(String yearValue);
 }

@@ -21,6 +21,9 @@ public class CarServices {
     @Autowired
     private UserRepository userRepository;
 
+    public List<CarModel> findAllCars(){
+        return carRepository.findAll();
+    }
 
     public CarModel registerCar(CarModelRequestDto carModelRequestDto, String username){
 

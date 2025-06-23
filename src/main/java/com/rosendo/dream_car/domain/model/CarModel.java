@@ -47,6 +47,19 @@ public class CarModel implements Serializable {
     @JsonAlias({"referenceMonth"})
     private String referenceMonth;
 
+
+    public CarModel(Long userId, String model, String brandName, String modelYear, String fuel, String price, String referenceMonth) {
+        this.userId = userId;
+        this.model = model;
+        this.brandName = brandName;
+        this.modelYear = modelYear;
+        this.fuel = fuel;
+        this.price = price;
+        this.referenceMonth = referenceMonth;
+    }
+
+    public CarModel() {}
+
     public Long getId() {
         return id;
     }
