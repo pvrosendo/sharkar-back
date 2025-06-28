@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.rosendo</groupId>
-	<artifactId>dream-car</artifactId>
+	<artifactId>sharkar</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>dream-car</name>
+	<name>sharkar</name>
 	<description>no-description</description>
 	<url/>
 	<licenses>
