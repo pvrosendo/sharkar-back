@@ -11,7 +11,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "DC_CARS_YEARS_FIPE")
+@Table(name = "SK_CARS_YEARS_FIPE")
 public class FipeYearModels implements Serializable {
 
     @Serial

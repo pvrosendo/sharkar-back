@@ -9,7 +9,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name="DC_CARS_USERS")
+@Table(name="SK_CARS_USERS")
 public class CarModel implements Serializable {
 
     @Serial

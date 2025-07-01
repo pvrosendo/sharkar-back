@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "DC_CARS_BRANDS_FIPE")
+@Table(name = "SK_CARS_BRANDS_FIPE")
 public class FipeBrandModels implements Serializable {
 
     @Serial

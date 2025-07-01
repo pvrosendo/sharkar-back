@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "DC_CARS_INFO_FIPE")
+@Table(name = "SK_CARS_INFO_FIPE")
 public class FipeInfoModel implements Serializable {
 
     @Serial

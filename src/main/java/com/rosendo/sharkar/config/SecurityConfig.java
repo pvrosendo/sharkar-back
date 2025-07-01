@@ -30,7 +30,7 @@ import java.util.Map;
 @Configuration
 public class SecurityConfig {
 
-    @Value("${security.cors.allowed-origins:http://localhost:3000}")
+    @Value("${security.cors.allowed-origins}")
     private String allowedOrigins;
 
     @Autowired
