@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # Necessário para autenticação com a AWS
+      id-token: write
 
     steps:
       - name: Checkout Repository
@@ -46,11 +46,17 @@ jobs:
         run: |
           aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION_FAMILY }} --query taskDefinition > task-definition.json
 
+      - name: Clean up task definition for deployment
+        id: clean-task-def
+        run: |
+          jq 'del(.taskDefinitionArn, .revision, .status, .compatibilities, .requiresAttributes, .registeredAt, .registeredBy, .enableFaultInjection)' task-definition.json > clean-task-definition.json
+          echo "::set-output name=file_path::$(pwd)/clean-task-definition.json"
+
       - name: Fill in new image ID in task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
+          task-definition: ${{ steps.clean-task-def.outputs.file_path }}
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
