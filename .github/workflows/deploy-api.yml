@@ -1,4 +1,4 @@
-name: Deploy Spring Boot API to AWS ECS
+name: Deploy API to AWS ECS
 
 on:
   push:
