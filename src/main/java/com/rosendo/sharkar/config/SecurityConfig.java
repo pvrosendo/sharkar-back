@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.http.HttpMethod.OPTIONS;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
@@ -73,6 +75,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
+                                .requestMatchers(OPTIONS, "/**").permitAll()
                                 .requestMatchers(
                                         "/sharkar/auth/signin",
                                         "/sharkar/auth/refresh/**",
