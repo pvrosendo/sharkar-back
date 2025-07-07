@@ -6,7 +6,7 @@ on:
 
 env:
   ECS_CLUSTER_NAME: sharkar-cluster
-  ECS_SERVICE_NAME: sharkar-api-service
+  ECS_SERVICE_NAME: sharkar-api-task-service
   ECS_TASK_DEFINITION_FAMILY: sharkar-api-task
   CONTAINER_NAME: sharkar-api-container
 
