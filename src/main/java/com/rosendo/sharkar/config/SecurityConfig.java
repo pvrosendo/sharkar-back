@@ -74,11 +74,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(
-                                        "sharkar/auth/signin",
-                                        "sharkar/auth/refresh/**",
-                                        "sharkar/auth/createUser",
-                                        "sharkar/auth/signout",
-                                        "sharkar/auth/user/**",
+                                        "/sharkar/auth/signin",
+                                        "/sharkar/auth/refresh/**",
+                                        "/sharkar/auth/createUser",
+                                        "/sharkar/auth/signout",
+                                        "/sharkar/auth/user/**",
                                         "/actuator/health"
                                 ).permitAll()
                                 .requestMatchers("/sharkar/**").authenticated()
