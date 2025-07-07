@@ -78,6 +78,7 @@ public class SecurityConfig {
                                 .requestMatchers(OPTIONS, "/**").permitAll()
                                 .requestMatchers(
                                         "sharkar/auth/signin",
+                                        "sharkar/auth/validate-token",
                                         "sharkar/auth/refresh/**",
                                         "sharkar/auth/createUser",
                                         "sharkar/auth/signout",
