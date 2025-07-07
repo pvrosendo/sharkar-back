@@ -78,7 +78,8 @@ public class SecurityConfig {
                                         "sharkar/auth/refresh/**",
                                         "sharkar/auth/createUser",
                                         "sharkar/auth/signout",
-                                        "sharkar/auth/user/**"
+                                        "sharkar/auth/user/**",
+                                        "/actuator/health"
                                 ).permitAll()
                                 .requestMatchers("/sharkar/**").authenticated()
                                 .requestMatchers("/sharkar/fipe/").denyAll()
