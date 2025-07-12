@@ -1,10 +1,10 @@
-package com.rosendo.register_car;
+package com.rosendo.sharkar;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RegisterCarApplicationTests {
+class SharkarApplicationTests {
 
 	@Test
 	void contextLoads() {
