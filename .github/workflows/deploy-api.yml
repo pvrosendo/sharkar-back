@@ -2,7 +2,7 @@ name: Deploy API to AWS ECS
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "" ]
 
 env:
   ECS_CLUSTER_NAME: sharkar-cluster
